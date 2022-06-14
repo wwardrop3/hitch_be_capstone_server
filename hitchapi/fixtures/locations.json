@@ -1,0 +1,77 @@
+[
+    {
+    "model": "hitchapi.location",
+    "pk": 1,
+    "fields": {
+        "lat": "36.15194663685013",
+        "lng": "-86.77841553841512"
+        
+    }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 2,
+        "fields": {
+            "lat": "33.760212973223155",
+            "lng": "-84.40756708137663"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 3,
+        "fields": {
+            "lat": "34.57431337792116",
+            "lng": "-86.29546790277878"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 4,
+        "fields": {
+            "lat": "35.144411669791346",
+            "lng": "-80.87938035463822"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 5,
+        "fields": {
+            "lat": "36.1707753803072",
+            "lng": "-86.61127475689779"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 6,
+        "fields": {
+            "lat": "35.38292953653972",
+            "lng": "-80.92675138275607"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 7,
+        "fields": {
+            "lat": "36.1262092245925",
+            "lng": "-86.75646102134794"
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 8,
+        "fields": {
+            "lat": "35.12620922845925",
+            "lng": "-87.75644102135794"
+            
+        }
+    },
+    {
+        "model": "hitchapi.location",
+        "pk": 9,
+        "fields": {
+            "lat": "36.32620922845925",
+            "lng": "-86.25646102135794"
+            
+        }
+    }
+]

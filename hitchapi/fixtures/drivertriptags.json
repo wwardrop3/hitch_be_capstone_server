@@ -1,0 +1,36 @@
+[
+    {
+    "model": "hitchapi.drivertriptag",
+    "pk": 1,
+    "fields": {
+        "driver_trip": 1,
+        "tag": 2
+    }
+    },
+    {
+        "model": "hitchapi.drivertriptag",
+        "pk": 2,
+        "fields": {
+            "driver_trip": 1,
+            "tag": 3
+        }
+        },
+        {
+            "model": "hitchapi.drivertriptag",
+            "pk": 3,
+            "fields": {
+                "driver_trip": 2,
+                "tag": 1
+            }
+            },
+            {
+                "model": "hitchapi.drivertriptag",
+                "pk": 4,
+                "fields": {
+                    "driver_trip": 3,
+                    "tag": 4
+                }
+                }
+
+
+]

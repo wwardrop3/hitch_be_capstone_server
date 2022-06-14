@@ -1,0 +1,36 @@
+[
+    {
+    "model": "hitchapi.driverpassengertrip",
+    "pk": 1,
+    "fields": {
+        "driver_trip": 1,
+        "passenger_trip": 2
+    }
+    },
+    {
+        "model": "hitchapi.driverpassengertrip",
+        "pk": 2,
+        "fields": {
+            "driver_trip": 1,
+            "passenger_trip": 3
+        }
+        },
+        {
+            "model": "hitchapi.driverpassengertrip",
+            "pk": 3,
+            "fields": {
+                "driver_trip": 2,
+                "passenger_trip": 1
+            }
+            },
+            {
+                "model": "hitchapi.driverpassengertrip",
+                "pk": 4,
+                "fields": {
+                    "driver_trip": 3,
+                    "passenger_trip": 4
+                }
+                }
+
+
+]

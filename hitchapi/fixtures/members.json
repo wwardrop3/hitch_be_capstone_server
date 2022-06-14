@@ -1,0 +1,35 @@
+[
+    {
+        "model": "hitchapi.member",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "bio": "first person",
+            "profile_image_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
+            "created_on": "2022-05-16 11:33:31.353462",
+            "active": true
+        }
+    },
+    {
+        "model": "hitchapi.member",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "bio": "second person",
+            "profile_image_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
+            "created_on": "2022-05-18 11:33:31.353462",
+            "active": true
+        }
+    },
+    {
+        "model": "hitchapi.member",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "bio": "third person",
+            "profile_image_url": "https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png",
+            "created_on": "2022-05-20 11:33:31.353462",
+            "active": true
+        }
+    }
+]
