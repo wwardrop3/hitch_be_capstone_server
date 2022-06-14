@@ -6,7 +6,6 @@ from os import stat
 from re import M
 from sqlite3 import Date
 from xmlrpc.client import DateTime
-from pytz import utc
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
 from rest_framework.response import Response
@@ -24,9 +23,6 @@ from hitchapi.serializers.driver_trip_serializer import CreateDriverTripSerializ
 from hitchapi.serializers.passenger_trip_serializer import PassengerTripSerializer 
 
 class DriverTripView(ViewSet):
-    
-    
-    # for
     
     def list(self, request):
         """get all trips from a user"""
@@ -51,7 +47,6 @@ class DriverTripView(ViewSet):
                 
                 for trip in driver_trips:
                     
-                    
                     if trip.driver.user == request.auth.user:
                         trip.is_user = True
                     else:
@@ -69,16 +64,19 @@ class DriverTripView(ViewSet):
                 
                     distance_away = great_circle(center_point, test_point).mi
                     
-         
+                    # trip.pick_up_radius
                     
                     if distance_away < trip.detour_radius:
                         filtered_trips.append(trip)
-                        
                     
-           
+                    # calculate distance between center point and test point
+                    # add trips that have origin within radius
+                    
+                    
+        
 
                 
-         
+                
                 
                 
                 
@@ -89,34 +87,22 @@ class DriverTripView(ViewSet):
                     
                     point_objects = []
                     raw_points = polyline.decode(driver_trip.path)
+                
                     
-                    
-                    point_time_change = driver_trip.expected_travel_time / len(raw_points)
-                    base_time = driver_trip.start_date
-        
                     for point in raw_points:
-            
                         a = {
-                            "time_stamp": base_time,
                             "lat": point[0],
                             "lng": point[1]
                         }
-                
                         point_objects.append(a)
-                        base_time = base_time + datetime.timedelta(0,point_time_change)
-                    
-                    
-                    
-                  
-                    
-                    
+                    driver_trip.path_points = point_objects
                 
                 
             except:
                 pass
 
         
-            driver_trip.path_points = point_objects
+
             serializer = DriverTripSerializer(filtered_trips, many = True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -131,30 +117,12 @@ class DriverTripView(ViewSet):
         
         driver_trip = DriverTrip.objects.get(pk = pk)
         
-    
         if driver_trip.driver.user == request.auth.user:
             driver_trip.is_user = True
         else:
             driver_trip.is_user = False
         
-        point_objects = []
-        raw_points = polyline.decode(driver_trip.path)
-        
-        point_time_change = driver_trip.expected_travel_time / len(raw_points)
-        base_time = driver_trip.start_date
-        
-        for point in raw_points:
-            
-            a = {
-                "time_stamp": base_time,
-                "lat": point[0],
-                "lng": point[1]
-            }
-            
-            point_objects.append(a)
-            base_time = base_time + datetime.timedelta(0,point_time_change)
-            
-        driver_trip.path_points = point_objects
+        driver_trip.path_points = polyline.decode(driver_trip.path)
         
         serializer = DriverTripSerializer(driver_trip)
         

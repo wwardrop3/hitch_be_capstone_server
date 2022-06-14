@@ -1,4 +1,3 @@
-from crypt import methods
 import datetime
 from lib2to3.pgen2 import driver
 from os import stat
@@ -160,102 +159,38 @@ class PassengerTripView(ViewSet):
         return Response(None, status=status.HTTP_200_OK)
     
     
-
-    @action(methods=['get'], detail=False)
-    def driver_trips_by_passenger_trip(self, request):
-        
-        driver_trips = DriverTrip.objects.all()
-        
-        request.data['path_points'] = polyline.decode(request.data['path'])
+    @action(methods=['get'], detail=True)
+    def trip_decode(self, request, pk):
         
         
-        filtered_trips = []
         
-        for trip in driver_trips:
-            
-            
-            if trip.driver.user == request.auth.user:
-                trip.is_user = True
-            else:
-                trip.is_user = False
-                
-                for passenger_trip in trip.passenger_trips.all():
-                    if passenger_trip.passenger.user.id == request.auth.user.id:
-                        trip.is_signed_up = True
-                    else:
-                        trip.is_signed_up = False
-            
-            # first getting 1st set of trips in my area
-            center_point = (request.data['origin']['lat'], request.data['origin']['lat'])
-            test_point = (trip.origin.lat, trip.origin.lng)
+        passenger_trip = PassengerTrip.objects.get(pk = pk)
         
-            distance_away = great_circle(center_point, test_point).mi
-            
-    
-            # if trip is in my area, then check other driving trips that cross the paths of the trips
-            if distance_away < trip.detour_radius:
-                driver_trip_break = False
-                path_point_break = False
-                
-                filtered_trips.append(trip)
-                    
+        passenger_trip.path_points = polyline.decode(passenger_trip.path)
         
-                for driver_trip in driver_trips:
-                            
-                    point_objects = []
-                    raw_points = polyline.decode(driver_trip.path)
-                
-                    
-                    for point in raw_points:
-                        a = {
-                            "lat": point[0],
-                            "lng": point[1]
-                        }
-                        point_objects.append(a)
-                    
-                    
-                    for path_point in request.data.path_points:
-                        
-                    
-                        for driver_point in path_point:
-                            
-                            center_point = (path_point[0], path_point[1])
-                            test_point = (driver_point['lat'], driver_point['lng'])
-                        
-                            distance_away = great_circle(center_point, test_point).mi
-                            
-                        
-                            if distance_away < request.data['detour_radius']:
-                                print(distance_away)
-                                
-                                driver_trip_serializer = DriverTripSerializer(driver_trip)
-                        
-                        
-                                filtered_trips.append(driver_trip)
-                                path_point_break = True
-                                break
-                            
-                        if path_point_break:
-                            driver_trip_break = True
-                            break
-                    
-                    if driver_trip_break:
-                        break
-                    
-        print(filtered_trips)
         serializer = PassengerTripSerializer(passenger_trip)
-                                
-            
         
-                            
-            
-            
-            
-            
-            
-                
+        return Response(serializer.data)
     
-            
+    
+    @action(methods=['get'], detail=False)
+    def trips_decode(self, request):
         
+        passenger_trips = PassengerTrip.objects.all()
         
-                
+        for passenger_trip in passenger_trips:
+            point_objects = []
+            rawPoints = polyline.decode(passenger_trip.path)
+            for point in rawPoints[0:7]:
+                    a = {
+                        "lat": point[0],
+                        "lng": point[1]
+                    }
+                    point_objects.append(a)
+            passenger_trip.path_points = point_objects
+        
+        serializer = PassengerTripSerializer(passenger_trips, many = True)
+        
+        return Response(serializer.data)
+    
+    
