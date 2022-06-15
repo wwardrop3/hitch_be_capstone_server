@@ -9,6 +9,7 @@ from hitchapi.views.auth import login_user, register_user
 from hitchapi.views.member_view import MemberView
 from hitchapi.views.passenger_trip_view import PassengerTripView
 from hitchapi.views.driver_trip_view import DriverTripView
+from hitchapi.views.tag_view import TagView
 
 
 
@@ -17,6 +18,7 @@ router = DefaultRouter(trailing_slash = False)
 router.register(r'driver_trips', DriverTripView, "driver_trip")
 router.register(r'passenger_trips', PassengerTripView, "passenger_trip")
 router.register(r'members', MemberView, "member")
+router.register(r'tags', TagView, "tag")
 
 
 

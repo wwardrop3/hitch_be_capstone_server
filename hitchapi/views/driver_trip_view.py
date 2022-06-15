@@ -52,6 +52,11 @@ class DriverTripView(ViewSet):
                     else:
                         trip.is_user = False
                         
+                        if len(trip.passenger_trips.all()) == 0:
+                            trip.is_assigned = False
+                        else:
+                            trip.is_assigned = True
+                            
                         for passenger_trip in trip.passenger_trips.all():
                             if passenger_trip.passenger.user.id == request.auth.user.id:
                                 trip.is_signed_up = True
@@ -122,7 +127,19 @@ class DriverTripView(ViewSet):
         else:
             driver_trip.is_user = False
         
-        driver_trip.path_points = polyline.decode(driver_trip.path)
+       
+        
+        point_objects = []
+        raw_points = polyline.decode(driver_trip.path)
+    
+        
+        for point in raw_points:
+            a = {
+                "lat": point[0],
+                "lng": point[1]
+            }
+            point_objects.append(a)
+        driver_trip.path_points = point_objects
         
         serializer = DriverTripSerializer(driver_trip)
         

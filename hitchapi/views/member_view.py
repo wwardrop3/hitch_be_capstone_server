@@ -42,3 +42,12 @@ class MemberView(ViewSet):
         serializer = MemberSerializer(member)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    def destroy(self, request, pk):
+        member = Member.objects.get(pk = pk)
+        
+        member.delete()
+        
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+    

@@ -41,3 +41,11 @@ class DriverTrip(models.Model):
     @is_signed_up.setter
     def is_signed_up(self, value):
         self.__is_signed_up = value
+        
+        
+    @property
+    def is_assigned(self):
+        return self.__is_assigned
+    @is_assigned.setter
+    def is_assigned(self, value):
+        self.__is_assigned = value

@@ -12,5 +12,5 @@ class MemberSerializer(ModelSerializer):
     class Meta:
         
         model = Member
-        fields = ("user", "bio", "profile_image_url", "driver_trips", "passenger_trips")
+        fields = ("id", "user", "bio", "profile_image_url", "driver_trips", "passenger_trips")
         depth= 1

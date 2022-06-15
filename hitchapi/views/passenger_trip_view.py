@@ -112,15 +112,13 @@ class PassengerTripView(ViewSet):
         origin = Location.objects.create(
             lat = request.data['origin']['lat'],
             lng = request.data["origin"]['lng'],
-            city = request.data['origin']['city'],
-            state = request.data['origin']['state']
+  
         )
         
         destination = Location.objects.create(
             lat = request.data['destination']['lat'],
             lng = request.data["destination"]['lng'],
-            city = request.data['destination']['city'],
-            state = request.data['destination']['state']
+       
         )
         
         request.data['passenger'] = passenger.id
