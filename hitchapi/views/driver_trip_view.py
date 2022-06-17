@@ -9,6 +9,7 @@ from xmlrpc.client import DateTime
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
 from rest_framework.response import Response
+from hitchapi.models.DriverTripRating import DriverTripRating
 from hitchapi.models.Location import Location
 from rest_framework.decorators import action
 import polyline
@@ -19,7 +20,7 @@ from geopy.distance import great_circle
 from hitchapi.models.DriverTrip import DriverTrip
 from hitchapi.models.Member import Member
 from hitchapi.models.PassengerTrip import PassengerTrip
-from hitchapi.serializers.driver_trip_serializer import CreateDriverTripSerializer, DriverTripSerializer
+from hitchapi.serializers.driver_trip_serializer import CreateDriverTripSerializer, DriverTripSerializer, UpdateDriverTripSerializer
 from hitchapi.serializers.passenger_trip_serializer import PassengerTripSerializer 
 
 class DriverTripView(ViewSet):
@@ -47,38 +48,45 @@ class DriverTripView(ViewSet):
                 
                 for trip in driver_trips:
                     
-                    if trip.driver.user == request.auth.user:
-                        trip.is_user = True
+                    if trip.completed == True:
+                        pass
+                    
                     else:
-                        trip.is_user = False
+                    
                         
-                        if len(trip.passenger_trips.all()) == 0:
-                            trip.is_assigned = False
+                        
+                        if trip.driver.user == request.auth.user:
+                            trip.is_user = True
                         else:
-                            trip.is_assigned = True
+                            trip.is_user = False
                             
-                        for passenger_trip in trip.passenger_trips.all():
-                            if passenger_trip.passenger.user.id == request.auth.user.id:
-                                trip.is_signed_up = True
+                            if len(trip.passenger_trips.all()) == 0:
+                                trip.is_assigned = False
                             else:
-                                trip.is_signed_up = False
-                    
+                                trip.is_assigned = True
+                                
+                            for passenger_trip in trip.passenger_trips.all():
+                                if passenger_trip.passenger.user.id == request.auth.user.id:
+                                    trip.is_signed_up = True
+                                else:
+                                    trip.is_signed_up = False
+                        
 
-                    center_point = (lat, lng)
-                    test_point = (trip.origin.lat, trip.origin.lng)
-                
-                    distance_away = great_circle(center_point, test_point).mi
+                        center_point = (lat, lng)
+                        test_point = (trip.origin.lat, trip.origin.lng)
                     
-                    # trip.pick_up_radius
-                    
-                    if distance_away < trip.detour_radius:
-                        filtered_trips.append(trip)
-                    
-                    # calculate distance between center point and test point
-                    # add trips that have origin within radius
-                    
-                    
-        
+                        distance_away = great_circle(center_point, test_point).mi
+                        
+                        # trip.pick_up_radius
+                        
+                        if distance_away < trip.detour_radius:
+                            filtered_trips.append(trip)
+                        
+                        # calculate distance between center point and test point
+                        # add trips that have origin within radius
+                        
+                        
+            
 
                 
                 
@@ -191,7 +199,9 @@ class DriverTripView(ViewSet):
         
         driver_trip = DriverTrip.objects.get(pk = pk)
         
-        serializer = CreateDriverTripSerializer(driver_trip, data = request.data)
+
+        
+        serializer = UpdateDriverTripSerializer(driver_trip, data = request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         driver_trip.tags.remove(*driver_trip.tags.all())
@@ -261,6 +271,6 @@ class DriverTripView(ViewSet):
         
         
         return Response("driver added", status=status.HTTP_200_OK)
-        
-    
+
+
     

@@ -22,3 +22,17 @@ class Member(models.Model):
     @driver_trips.setter
     def driver_trips(self, value):
         self.__driver_trips = value
+        
+    @property
+    def avg_rating(self):
+        return self.__avg_rating
+    @avg_rating.setter
+    def avg_rating(self, value):
+        self.__avg_rating = value
+
+    @property
+    def total_ratings(self):
+        return self.__total_ratings
+    @total_ratings.setter
+    def total_ratings(self, value):
+        self.__total_ratings = value

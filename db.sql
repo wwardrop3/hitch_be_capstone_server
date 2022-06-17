@@ -3,8 +3,8 @@ DROP TABLE hitchapi_driver_trips
 DROP TABLE hitchapi_location
 
 
-DELETE FROM hitchapi_member
-WHERE id <9
+DELETE FROM auth_user
+WHERE id <2
 
 DELETE FROM hitchapi_triptag
 WHERE driver_trip_id >0
@@ -18,3 +18,6 @@ WHERE id >0
 
 DELETE FROM hitchapi_passengertrip
 WHERE id >0
+
+DELETE FROM authtoken_token
+WHERE user_id <2
