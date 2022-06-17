@@ -2,6 +2,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework import status
 from rest_framework.response import Response
 from hitchapi.models.DriverTrip import DriverTrip
+from hitchapi.models.DriverTripRating import DriverTripRating
 
 from hitchapi.models.Member import Member
 from hitchapi.models.PassengerTrip import PassengerTrip
@@ -30,7 +31,28 @@ class MemberView(ViewSet):
         passenger_trips_serializer = PassengerTripSerializer(passenger_trips, many = True)
         
         driver_trips = DriverTrip.objects.filter(driver = member)
+        
         driver_trips_serializer = DriverTripSerializer(driver_trips, many = True)
+        
+        avg_rating = 0
+        total_ratings = 0
+        
+        for driver_trip in driver_trips:
+            ratings = DriverTripRating.objects.filter(driver_trip = driver_trip)
+            
+            for rating in ratings:
+                avg_rating += rating.rating
+                total_ratings += 1
+        
+        try:
+            member.avg_rating = avg_rating / total_ratings
+            member.total_ratings = total_ratings
+        except:
+            pass    
+        
+
+        
+        
 
         
         member.passenger_trips = passenger_trips_serializer.data
@@ -42,3 +64,12 @@ class MemberView(ViewSet):
         serializer = MemberSerializer(member)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    def destroy(self, request, pk):
+        member = Member.objects.get(pk = pk)
+        
+        member.delete()
+        
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+    
