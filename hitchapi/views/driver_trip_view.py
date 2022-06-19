@@ -19,6 +19,7 @@ from geopy.distance import great_circle
 
 from hitchapi.models.DriverTrip import DriverTrip
 from hitchapi.models.Member import Member
+from hitchapi.models.Message import Message
 from hitchapi.models.PassengerTrip import PassengerTrip
 from hitchapi.serializers.driver_trip_serializer import CreateDriverTripSerializer, DriverTripSerializer, UpdateDriverTripSerializer
 from hitchapi.serializers.passenger_trip_serializer import PassengerTripSerializer 
@@ -238,8 +239,20 @@ class DriverTripView(ViewSet):
             trip_distance = request.data['trip_distance'],
             expected_travel_time = request.data['expected_travel_time'],
             trip_summary = request.data['trip_summary'],
-            path = request.data['path']
+            path = request.data['path'],
+            is_approved = False
             
+            
+        )
+        
+        new_message = Message.objects.create(
+            driver_trip = driver_trip,
+            passenger_trip=passenger_trip,
+            creation_date = datetime.datetime.now(),
+            is_read = False,
+            message_text = "Passenger Trip Requested",
+            sender = driver_trip.driver,
+            receiver=passenger_trip.passenger
             
         )
         
@@ -247,7 +260,7 @@ class DriverTripView(ViewSet):
         driver_trip.passenger_trips.add(passenger_trip.id)
         
         
-        return Response("driver added", status=status.HTTP_200_OK)
+        return Response("Trip added", status=status.HTTP_200_OK)
         
         
     @action(methods=['put'], detail=True)
@@ -258,6 +271,9 @@ class DriverTripView(ViewSet):
         
         passenger_trip = driver_trip.passenger_trips.get(passenger__user = request.auth.user)
 
+        message = Message.objects.filter(passenger_trip = passenger_trip, driver_trip=driver_trip)
+        
+        message.delete()
 
 
         
@@ -270,7 +286,7 @@ class DriverTripView(ViewSet):
         passenger_trip.delete()
         
         
-        return Response("driver added", status=status.HTTP_200_OK)
+        return Response("Trip Deleted", status=status.HTTP_200_OK)
 
 
     

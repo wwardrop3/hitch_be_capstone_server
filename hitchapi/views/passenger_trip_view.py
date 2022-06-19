@@ -19,7 +19,7 @@ from geopy.distance import great_circle
 from hitchapi.models.PassengerTrip import PassengerTrip
 from hitchapi.models.Member import Member
 from hitchapi.models.PassengerTrip import PassengerTrip
-from hitchapi.serializers.passenger_trip_serializer import CreatePassengerTripSerializer, PassengerTripSerializer 
+from hitchapi.serializers.passenger_trip_serializer import CreatePassengerTripSerializer, PassengerTripSerializer, UpdatePassengerTripSerializer 
 
 class PassengerTripView(ViewSet):
     
@@ -188,11 +188,10 @@ class PassengerTripView(ViewSet):
         
         passenger_trip = PassengerTrip.objects.get(pk = pk)
         
-        serializer = CreatePassengerTripSerializer(passenger_trip, data = request.data)
+        serializer = UpdatePassengerTripSerializer(passenger_trip, data = request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        passenger_trip.tags.remove(*passenger_trip.tags.all())
-        passenger_trip.tags.add(*request.data['tags'])
+
     
         
         return Response(None, status=status.HTTP_200_OK)

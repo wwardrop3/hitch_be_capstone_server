@@ -8,6 +8,8 @@ class PassengerTrip(models.Model):
     passenger = models.ForeignKey("Member", on_delete=models.CASCADE)
     origin = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="passenger_trip_origin")
     destination = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="passenger_trip_destination")
+    origin_place = models.TextField()
+    destination_place=models.TextField()
     creation_date = models.DateTimeField()
     start_date = models.DateTimeField()
     completion_date = models.DateTimeField(null=True)
@@ -15,6 +17,7 @@ class PassengerTrip(models.Model):
     expected_travel_time = models.FloatField()
     trip_summary = models.TextField(null=True)
     path = models.TextField()
+    is_approved = models.BooleanField()
     
     @property
     def path_points(self):

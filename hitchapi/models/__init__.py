@@ -6,3 +6,4 @@ from .DriverTrip import DriverTrip
 from .TripTag import TripTag
 from .DriverPassengerTrip import DriverPassengerTrip
 from .DriverTripRating import DriverTripRating
+from .Message import Message

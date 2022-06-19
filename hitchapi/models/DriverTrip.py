@@ -7,6 +7,8 @@ class DriverTrip(models.Model):
     driver = models.ForeignKey("Member", on_delete=models.CASCADE) 
     origin = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="trip_origin")
     destination = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="trip_destination")
+    origin_place = models.TextField()
+    destination_place = models.TextField()
     creation_date = models.DateTimeField()
     start_date = models.DateTimeField()
     completion_date = models.DateTimeField(null=True)
