@@ -5,6 +5,7 @@ from lib2to3.pgen2 import driver
 from os import stat
 from re import M
 from sqlite3 import Date
+from typing import final
 from xmlrpc.client import DateTime
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
@@ -15,6 +16,8 @@ from rest_framework.decorators import action
 import polyline
 from geopy import distance
 from geopy.distance import great_circle
+from django.db.models import Q
+
 
 
 from hitchapi.models.DriverTrip import DriverTrip
@@ -289,4 +292,131 @@ class DriverTripView(ViewSet):
         return Response("Trip Deleted", status=status.HTTP_200_OK)
 
 
+    @action(methods=['post'], detail=False)
+    def get_driver_trips_by_passenger_trip(self, request):
+        
+        
+        # first filter driver trips by those that start after the passenger_trip start date
+        driver_trips = DriverTrip.objects.filter(start_date__gt = request.data['start_date'])
+        
+        detailed_trips = []
+  
+         
+        # assigning detail of ALL driver trips that occur after passenger trip starting date
+        for trip in driver_trips:
+            
+            if trip.completed == True:
+                pass
+            
+            else:
+            
+                
+                
+                if trip.driver.user == request.auth.user:
+                    trip.is_user = True
+                else:
+                    trip.is_user = False
+                    
+                    if len(trip.passenger_trips.all()) == 0:
+                        trip.is_assigned = False
+                    else:
+                        trip.is_assigned = True
+                        
+                    for passenger_trip in trip.passenger_trips.all():
+                        if passenger_trip.passenger.user.id == request.auth.user.id:
+                            trip.is_signed_up = True
+                        else:
+                            trip.is_signed_up = False
+                
+                point_objects = []
+                raw_points = polyline.decode(trip.path)
+            
+                
+                for point in raw_points:
+                    a = {
+                        "lat": point[0],
+                        "lng": point[1]
+                    }
+                    point_objects.append(a)
+                trip.path_points = point_objects
+                
+
+                detailed_trips.append(trip)
+                
+        
     
+
+        
+        
+        
+        
+        
+        nearby_trips = []
+        
+        try:
+            # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
+            for trip in detailed_trips:
+             
+                
+                center_point = (request.data['origin']['lat'], request.data['origin']['lng'])
+                test_point = (trip.origin.lat, trip.origin.lng)
+            
+                distance_away = great_circle(center_point, test_point).mi
+                
+                # it its close by to start, add to nearby trips list
+                if distance_away < trip.detour_radius:
+                    
+                    print(len(nearby_trips))
+                    print(len(detailed_trips))
+                    nearby_trips.append(detailed_trips.pop(-1))
+                    
+                    print(len(nearby_trips))
+                    print(len(detailed_trips))
+                
+           
+                
+                
+            
+            
+        except:
+            pass
+        
+        final_trips = []
+        driver_trip_break = False
+        
+        for nearby_trip in nearby_trips:
+            final_trips.append(nearby_trip)
+
+                
+            for detailed_trip in detailed_trips:
+               
+
+                for nearby_trip_point in nearby_trip.path_points:
+
+
+                    for detailed_trip_point in detailed_trip.path_points:
+                        
+                
+                        center_point = (nearby_trip_point.lat, nearby_trip_point.lng)
+                        test_point = (detailed_trip_point.lat, detailed_trip_point.lng)
+                    
+                        distance_away = great_circle(center_point, test_point).mi
+                        
+                        # trip.pick_up_radius
+                        
+                        if distance_away < trip.detour_radius:
+                            final_trips.append(detailed_trip)
+                            pass
+                            driver_trip_break = True
+                
+    
+        
+        
+            
+        
+        
+        
+        serializer = DriverTripSerializer(final_trips, many = True)
+
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

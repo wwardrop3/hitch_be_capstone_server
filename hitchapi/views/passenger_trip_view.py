@@ -23,6 +23,13 @@ from hitchapi.serializers.passenger_trip_serializer import CreatePassengerTripSe
 
 class PassengerTripView(ViewSet):
     
+    def destroy(self, request, pk):
+        passenger_trip = PassengerTrip.objects.get(pk = pk)
+        
+        passenger_trip.delete()
+        
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+    
     def list(self, request):
         """get all trips from a user"""
         passenger_trips = PassengerTrip.objects.all()
@@ -121,7 +128,7 @@ class PassengerTripView(ViewSet):
         
         passenger_trip = PassengerTrip.objects.get(pk = pk)
         
-        if passenger_trip.Passenger.user == request.auth.user:
+        if passenger_trip.passenger.user == request.auth.user:
             passenger_trip.is_user = True
         else:
             passenger_trip.is_user = False
@@ -129,7 +136,7 @@ class PassengerTripView(ViewSet):
        
         
         point_objects = []
-        raw_points = polyline.decode(Passenger_trip.path)
+        raw_points = polyline.decode(passenger_trip.path)
     
         
         for point in raw_points:
@@ -251,7 +258,7 @@ class PassengerTripView(ViewSet):
         
         
         
-        Passenger_trip.passenger_trips.remove(passenger_trip.id)
+        passenger_trip.passenger_trips.remove(passenger_trip.id)
         
         passenger_trip.delete()
         
