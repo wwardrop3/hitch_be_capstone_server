@@ -48,7 +48,6 @@ class MessageView(ViewSet):
     def get_all_member_messages(self, request):
         member = Member.objects.get(user = request.auth.user)
         messages = Message.objects.filter(sender = member) | Message.objects.filter(receiver = member)
-        
         serializer = MessageSerializer(messages, many = True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)

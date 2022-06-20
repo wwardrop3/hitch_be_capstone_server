@@ -233,6 +233,7 @@ class DriverTripView(ViewSet):
         
         passenger = Member.objects.get(user = request.auth.user)
         
+        
         passenger_trip = PassengerTrip.objects.create(
             passenger = passenger,
             origin = origin,
@@ -299,8 +300,7 @@ class DriverTripView(ViewSet):
         # first filter driver trips by those that start after the passenger_trip start date
         driver_trips = DriverTrip.objects.filter(start_date__gt = request.data['start_date'])
         
-        detailed_trips = []
-  
+        detailed_trips = []  
          
         # assigning detail of ALL driver trips that occur after passenger trip starting date
         for trip in driver_trips:
@@ -314,6 +314,7 @@ class DriverTripView(ViewSet):
                 
                 if trip.driver.user == request.auth.user:
                     trip.is_user = True
+                    pass
                 else:
                     trip.is_user = False
                     
@@ -328,21 +329,21 @@ class DriverTripView(ViewSet):
                         else:
                             trip.is_signed_up = False
                 
-                point_objects = []
-                raw_points = polyline.decode(trip.path)
-            
+                    point_objects = []
+                    raw_points = polyline.decode(trip.path)
                 
-                for point in raw_points:
-                    a = {
-                        "lat": point[0],
-                        "lng": point[1]
-                    }
-                    point_objects.append(a)
-                trip.path_points = point_objects
-                
+                    
+                    for point in raw_points:
+                        a = {
+                            "lat": point[0],
+                            "lng": point[1]
+                        }
+                        point_objects.append(a)
+                    trip.path_points = point_objects
+                    
 
-                detailed_trips.append(trip)
-                
+                    detailed_trips.append(trip)
+                    
         
     
 
@@ -352,64 +353,74 @@ class DriverTripView(ViewSet):
         
         
         nearby_trips = []
+        far_trips = []
         
-        try:
-            # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
-            for trip in detailed_trips:
-             
-                
-                center_point = (request.data['origin']['lat'], request.data['origin']['lng'])
-                test_point = (trip.origin.lat, trip.origin.lng)
-            
-                distance_away = great_circle(center_point, test_point).mi
-                
-                # it its close by to start, add to nearby trips list
-                if distance_away < trip.detour_radius:
-                    
-                    print(len(nearby_trips))
-                    print(len(detailed_trips))
-                    nearby_trips.append(detailed_trips.pop(-1))
-                    
-                    print(len(nearby_trips))
-                    print(len(detailed_trips))
-                
-           
-                
-                
-            
-            
-        except:
-            pass
-        
-        final_trips = []
-        driver_trip_break = False
-        
-        for nearby_trip in nearby_trips:
-            final_trips.append(nearby_trip)
 
+        # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
+        for trip in detailed_trips:
+            
+            
+            center_point = (request.data['origin']['lat'], request.data['origin']['lng'])
+            test_point = (trip.origin.lat, trip.origin.lng)
+        
+            distance_away = great_circle(center_point, test_point).mi
+            
+            # it its close by to start, add to nearby trips list
+            if distance_away < trip.detour_radius:
                 
-            for detailed_trip in detailed_trips:
+    
+                nearby_trips.append(trip)
+                
+                
+            else:
+                far_trips.append(trip)
                
+                
+        
+            
+                
+            
+ 
 
+        
+        final_trips = set()
+        
+        far_trip_point_break = False
+        nearby_trip_point_break = False
+        far_trip_break = False
+        
+        # for each nearby trip
+        for nearby_trip in nearby_trips:
+            final_trips.add(nearby_trip)
+           
+
+            # for each far trip
+            for far_trip in far_trips:
+             
                 for nearby_trip_point in nearby_trip.path_points:
-
-
-                    for detailed_trip_point in detailed_trip.path_points:
+               
+    
+                    for far_trip_point in far_trip.path_points:
                         
                 
-                        center_point = (nearby_trip_point.lat, nearby_trip_point.lng)
-                        test_point = (detailed_trip_point.lat, detailed_trip_point.lng)
+                        center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
+                        test_point = (far_trip_point['lat'], far_trip_point['lng'])
                     
                         distance_away = great_circle(center_point, test_point).mi
                         
-                        # trip.pick_up_radius
-                        
-                        if distance_away < trip.detour_radius:
-                            final_trips.append(detailed_trip)
-                            pass
-                            driver_trip_break = True
-                
     
+                            
+                        if distance_away < 200:
+                            final_trips.add(far_trip)
+                            nearby_trip_point_break = True
+                            break
+                    if nearby_trip_point_break ==True:
+                        far_trip_break = True
+                        break
+                if far_trip_break ==True:
+                    pass
+               
+
         
         
             
@@ -420,3 +431,6 @@ class DriverTripView(ViewSet):
 
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    
