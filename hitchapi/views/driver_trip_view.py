@@ -15,7 +15,7 @@ from hitchapi.models.Location import Location
 from rest_framework.decorators import action
 import polyline
 from geopy import distance
-from geopy.distance import great_circle
+from geopy.distance import great_circle, geodesic
 from django.db.models import Q
 
 
@@ -296,6 +296,11 @@ class DriverTripView(ViewSet):
     @action(methods=['post'], detail=False)
     def get_driver_trips_by_passenger_trip(self, request):
         
+        trip_origin = (request.data['origin']['lat'], request.data['origin']['lng'])
+        trip_destination = (request.data['destination']['lat'], request.data['destination']['lng'])
+        
+        passenger_trip_distance = geodesic(trip_origin, trip_destination).mi
+        print(passenger_trip_distance)
         
         # first filter driver trips by those that start after the passenger_trip start date
         driver_trips = DriverTrip.objects.filter(start_date__gt = request.data['start_date'])
@@ -315,6 +320,7 @@ class DriverTripView(ViewSet):
                 if trip.driver.user == request.auth.user:
                     trip.is_user = True
                     pass
+              
                 else:
                     trip.is_user = False
                     
@@ -333,12 +339,13 @@ class DriverTripView(ViewSet):
                     raw_points = polyline.decode(trip.path)
                 
                     
-                    for point in raw_points:
-                        a = {
-                            "lat": point[0],
-                            "lng": point[1]
-                        }
-                        point_objects.append(a)
+                    for index, point in enumerate(raw_points):
+                        if index % 3 == 0:
+                            a = {
+                                "lat": point[0],
+                                "lng": point[1]
+                            }
+                            point_objects.append(a)
                     trip.path_points = point_objects
                     
 
@@ -358,6 +365,7 @@ class DriverTripView(ViewSet):
 
         # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
         for trip in detailed_trips:
+       
             
             
             center_point = (request.data['origin']['lat'], request.data['origin']['lng'])
@@ -391,11 +399,23 @@ class DriverTripView(ViewSet):
         
         # for each nearby trip
         for nearby_trip in nearby_trips:
-            final_trips.add(nearby_trip)
+            
+            nearby_trip_destination = (nearby_trip.destination.lat, nearby_trip.destination.lng)
+            nearby_trip_distance = geodesic(nearby_trip_destination, trip_destination).mi
+
+            
+            
+
+            
            
 
             # for each far trip
             for far_trip in far_trips:
+                far_trip_destination = (far_trip.destination.lat, far_trip.destination.lng)    
+                far_trip_distance = geodesic(far_trip_destination, trip_destination).mi
+                
+
+
              
                 for nearby_trip_point in nearby_trip.path_points:
                
@@ -408,17 +428,38 @@ class DriverTripView(ViewSet):
                     
                         distance_away = great_circle(center_point, test_point).mi
                         
-    
+                        
                             
-                        if distance_away < 200:
-                            final_trips.add(far_trip)
+                        if distance_away < nearby_trip.detour_radius:
+                            
+                            
+                        #    if there is an intersection and the far trip destination is closer than passenger now
+                            if far_trip_distance < passenger_trip_distance:
+                                
+                                final_trips.add(nearby_trip)
+                                final_trips.add(far_trip)
+                                nearby_trip_point_break = True
+                                break
+                            
+                            # if there is an intersection but the far trip isnt closer, check to see if the nearby trip gets closer or not
+                            elif nearby_trip_distance < passenger_trip_distance:
+                                final_trips.add(nearby_trip)
+                                nearby_trip_point_break = True
+                                break
+                            
+                        #     # if there is no intersection but the nearby trip still gets you closer, add it
+                        elif nearby_trip_distance < passenger_trip_distance:
+                            final_trips.add(nearby_trip)
                             nearby_trip_point_break = True
-                            break
+                            pass
+                            
+
+                                
                     if nearby_trip_point_break ==True:
                         far_trip_break = True
-                        break
-                if far_trip_break ==True:
-                    pass
+                        pass
+                # if far_trip_break ==True:
+                #     pass
                
 
         
