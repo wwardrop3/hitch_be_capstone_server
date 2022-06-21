@@ -51,3 +51,10 @@ class DriverTrip(models.Model):
     @is_assigned.setter
     def is_assigned(self, value):
         self.__is_assigned = value
+        
+    @property
+    def is_recommended(self):
+        return self.__is_recommended
+    @is_recommended.setter
+    def is_recommended(self, value):
+        self.__is_recommended = value

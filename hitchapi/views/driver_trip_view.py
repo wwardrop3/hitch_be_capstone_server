@@ -328,6 +328,7 @@ class DriverTripView(ViewSet):
                         trip.is_assigned = False
                     else:
                         trip.is_assigned = True
+                        pass
                         
                     for passenger_trip in trip.passenger_trips.all():
                         if passenger_trip.passenger.user.id == request.auth.user.id:
@@ -340,7 +341,7 @@ class DriverTripView(ViewSet):
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 3 == 0:
+                        if index % 5 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
