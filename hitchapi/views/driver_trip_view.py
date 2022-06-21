@@ -226,6 +226,8 @@ class DriverTripView(ViewSet):
     @action(methods=['put'], detail=True)
     def sign_up_passenger(self, request, pk):
         
+        sender = Member.objects.get(user = request.auth.user)
+        
         driver_trip = DriverTrip.objects.get(pk = pk)
         
         origin = Location.objects.get(pk = request.data['origin']['id'])
@@ -255,8 +257,8 @@ class DriverTripView(ViewSet):
             creation_date = datetime.datetime.now(),
             is_read = False,
             message_text = "Passenger Trip Requested",
-            sender = driver_trip.driver,
-            receiver=passenger_trip.passenger
+            sender = sender,
+            receiver=driver_trip.driver
             
         )
         
@@ -341,7 +343,7 @@ class DriverTripView(ViewSet):
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 5 == 0:
+                        if index % 10 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
@@ -362,6 +364,8 @@ class DriverTripView(ViewSet):
         
         nearby_trips = []
         far_trips = []
+        shortest_distance = 100000000
+        best_trips = []
         
 
         # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
@@ -414,14 +418,17 @@ class DriverTripView(ViewSet):
             for far_trip in far_trips:
                 far_trip_destination = (far_trip.destination.lat, far_trip.destination.lng)    
                 far_trip_distance = geodesic(far_trip_destination, trip_destination).mi
-                
+    
 
 
              
                 for nearby_trip_point in nearby_trip.path_points:
+                    
                
     
                     for far_trip_point in far_trip.path_points:
+                        if far_trip_distance > passenger_trip_distance:
+                            break
                         
                 
                         center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
@@ -436,7 +443,10 @@ class DriverTripView(ViewSet):
                             
                         #    if there is an intersection and the far trip destination is closer than passenger now
                             if far_trip_distance < passenger_trip_distance:
-                                
+                                if far_trip_distance < shortest_distance:
+                                    shortest_distance = far_trip_distance
+                                    best_trips = [nearby_trip, far_trip]
+                                    
                                 final_trips.add(nearby_trip)
                                 final_trips.add(far_trip)
                                 nearby_trip_point_break = True
@@ -444,12 +454,21 @@ class DriverTripView(ViewSet):
                             
                             # if there is an intersection but the far trip isnt closer, check to see if the nearby trip gets closer or not
                             elif nearby_trip_distance < passenger_trip_distance:
+                                
+                                if nearby_trip_distance < shortest_distance:
+                                    shortest_distance = nearby_trip_distance
+                                    best_trips=[nearby_trip]
+                                    
                                 final_trips.add(nearby_trip)
                                 nearby_trip_point_break = True
                                 break
                             
                         #     # if there is no intersection but the nearby trip still gets you closer, add it
                         elif nearby_trip_distance < passenger_trip_distance:
+                            if nearby_trip_distance < shortest_distance:
+                                    shortest_distance = nearby_trip_distance
+                                    best_trips=[nearby_trip]
+                                    
                             final_trips.add(nearby_trip)
                             nearby_trip_point_break = True
                             pass
@@ -465,7 +484,16 @@ class DriverTripView(ViewSet):
 
         
         
-            
+        for final_trip in final_trips:
+            for best_trip in best_trips:
+                if final_trip.id == best_trip.id:
+                    final_trip.is_recommended = True
+                    break
+                else:
+                    final_trip.is_recommended = False
+        
+       
+
         
         
         

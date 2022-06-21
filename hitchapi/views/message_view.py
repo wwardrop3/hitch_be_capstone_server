@@ -16,7 +16,7 @@ from hitchapi.models.DriverTrip import DriverTrip
 from hitchapi.models.Member import Member
 from hitchapi.models.Message import Message
 from hitchapi.models.PassengerTrip import PassengerTrip
-from hitchapi.serializers.message_serializer import MessageSerializer
+from hitchapi.serializers.message_serializer import CreateMessageSerializer, MessageSerializer
 from hitchapi.serializers.passenger_trip_serializer import PassengerTripSerializer 
 
 class MessageView(ViewSet):
@@ -33,10 +33,12 @@ class MessageView(ViewSet):
         driver_trip = DriverTrip.objects.get(pk = request.data['driver_trip'])
         passenger_trip = PassengerTrip.objects.get(pk = request.data['passenger_trip'])
     
+ 
+    
         request.data['creation_date'] = datetime.datetime.now()
-        message = MessageSerializer(data = request.data)
+        message = CreateMessageSerializer(data = request.data)
         message.is_valid(raise_exception=True)
-        message.save(sender = sender, receiver=receiver, driver_trip=driver_trip, passenger_trip = passenger_trip)
+        message.save(sender = sender, receiver = receiver, driver_trip=driver_trip, passenger_trip = passenger_trip)
         
         return Response("Message Sent", status = status.HTTP_201_CREATED)
     
