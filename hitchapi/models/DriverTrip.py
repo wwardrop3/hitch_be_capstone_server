@@ -7,6 +7,8 @@ class DriverTrip(models.Model):
     driver = models.ForeignKey("Member", on_delete=models.CASCADE) 
     origin = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="trip_origin")
     destination = models.ForeignKey("Location", on_delete=models.CASCADE, related_name="trip_destination")
+    origin_place = models.TextField()
+    destination_place = models.TextField()
     creation_date = models.DateTimeField()
     start_date = models.DateTimeField()
     completion_date = models.DateTimeField(null=True)
@@ -49,3 +51,10 @@ class DriverTrip(models.Model):
     @is_assigned.setter
     def is_assigned(self, value):
         self.__is_assigned = value
+        
+    @property
+    def is_recommended(self):
+        return self.__is_recommended
+    @is_recommended.setter
+    def is_recommended(self, value):
+        self.__is_recommended = value

@@ -13,8 +13,8 @@ class DriverTripSerializer(ModelSerializer):
     class Meta:
         
         model = DriverTrip
-        fields = ("id", "driver", "tags", "creation_date", "start_date", "completion_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed", "destination", "origin", "passenger_trips", "path", "path_points", "is_user", "is_signed_up", "is_assigned")
-        depth=1
+        fields = ("id", "driver", "tags", "creation_date", "start_date", "completion_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed", "destination", "origin", "passenger_trips", "path", "path_points", "is_user", "is_signed_up", "is_assigned", "origin_place", "destination_place", "is_recommended")
+        depth=2
         
     
 class CreateDriverTripSerializer(ModelSerializer):
@@ -25,7 +25,7 @@ class CreateDriverTripSerializer(ModelSerializer):
         
         
         model = DriverTrip
-        fields = ("id", "driver", "tags", "creation_date", "start_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed", "destination", "origin", "path", "path_points")
+        fields = ("id", "driver", "tags", "creation_date", "start_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed", "destination", "origin", "path", "path_points", "origin_place", "destination_place")
         
         
 class UpdateDriverTripSerializer(ModelSerializer):
@@ -36,6 +36,6 @@ class UpdateDriverTripSerializer(ModelSerializer):
         
         
         model = DriverTrip
-        fields = ("id", "tags", "creation_date", "start_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed")
+        fields = ("id", "tags", "creation_date", "start_date", "detour_radius", "trip_distance", "expected_travel_time", "trip_summary", "seats", "completed", "origin_place", "destination_place")
         
         

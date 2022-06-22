@@ -21,3 +21,6 @@ WHERE id >0
 
 DELETE FROM authtoken_token
 WHERE user_id <2
+
+DELETE FROM hitchapi_message
+WHERE id >0

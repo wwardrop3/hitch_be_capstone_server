@@ -13,4 +13,4 @@ class MemberSerializer(ModelSerializer):
         
         model = Member
         fields = ("id", "user", "bio", "profile_image_url", "driver_trips", "passenger_trips", "avg_rating", "total_ratings")
-        depth= 1
+        depth= 2

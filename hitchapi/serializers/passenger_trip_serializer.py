@@ -13,7 +13,7 @@ class PassengerTripSerializer(ModelSerializer):
     class Meta:
         
         model = PassengerTrip
-        fields = ("id", "passenger", "origin", "destination", "creation_date", "start_date", "trip_distance", "expected_travel_time", "trip_summary", "completion_date", "driver_trips", "path", "path_points", "recommended_trips")
+        fields = ("id", "passenger", "origin", "destination", "creation_date", "start_date", "trip_distance", "expected_travel_time", "trip_summary", "completion_date", "driver_trips", "path", "path_points", "recommended_trips",  "origin_place", "destination_place", "is_approved")
         depth = 1
         
     
@@ -22,5 +22,12 @@ class CreatePassengerTripSerializer(ModelSerializer):
     class Meta:
         
         model = PassengerTrip
-        fields = ("id", "passenger", "origin", "destination", "creation_date", "start_date", "trip_distance", "expected_travel_time", "trip_summary", "path", "path_points")
+        fields = ("id", "passenger", "origin", "destination", "creation_date", "start_date", "trip_distance", "expected_travel_time", "trip_summary", "path", "path_points",  "origin_place", "destination_place", "is_approved")
+        
+class UpdatePassengerTripSerializer(ModelSerializer):
+
+    class Meta:
+        
+        model = PassengerTrip
+        fields = ("id", "passenger", "origin", "destination", "creation_date", "start_date", "trip_distance", "expected_travel_time", "trip_summary", "path", "path_points", "is_approved")
         

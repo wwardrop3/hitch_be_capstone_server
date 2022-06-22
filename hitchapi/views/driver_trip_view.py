@@ -5,6 +5,7 @@ from lib2to3.pgen2 import driver
 from os import stat
 from re import M
 from sqlite3 import Date
+from typing import final
 from xmlrpc.client import DateTime
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
@@ -14,11 +15,14 @@ from hitchapi.models.Location import Location
 from rest_framework.decorators import action
 import polyline
 from geopy import distance
-from geopy.distance import great_circle
+from geopy.distance import great_circle, geodesic
+from django.db.models import Q
+
 
 
 from hitchapi.models.DriverTrip import DriverTrip
 from hitchapi.models.Member import Member
+from hitchapi.models.Message import Message
 from hitchapi.models.PassengerTrip import PassengerTrip
 from hitchapi.serializers.driver_trip_serializer import CreateDriverTripSerializer, DriverTripSerializer, UpdateDriverTripSerializer
 from hitchapi.serializers.passenger_trip_serializer import PassengerTripSerializer 
@@ -222,12 +226,15 @@ class DriverTripView(ViewSet):
     @action(methods=['put'], detail=True)
     def sign_up_passenger(self, request, pk):
         
+        sender = Member.objects.get(user = request.auth.user)
+        
         driver_trip = DriverTrip.objects.get(pk = pk)
         
         origin = Location.objects.get(pk = request.data['origin']['id'])
         destination = Location.objects.get(pk = request.data['destination']['id'])
         
         passenger = Member.objects.get(user = request.auth.user)
+        
         
         passenger_trip = PassengerTrip.objects.create(
             passenger = passenger,
@@ -238,8 +245,20 @@ class DriverTripView(ViewSet):
             trip_distance = request.data['trip_distance'],
             expected_travel_time = request.data['expected_travel_time'],
             trip_summary = request.data['trip_summary'],
-            path = request.data['path']
+            path = request.data['path'],
+            is_approved = False
             
+            
+        )
+        
+        new_message = Message.objects.create(
+            driver_trip = driver_trip,
+            passenger_trip=passenger_trip,
+            creation_date = datetime.datetime.now(),
+            is_read = False,
+            message_text = "Passenger Trip Requested",
+            sender = sender,
+            receiver=driver_trip.driver
             
         )
         
@@ -247,7 +266,7 @@ class DriverTripView(ViewSet):
         driver_trip.passenger_trips.add(passenger_trip.id)
         
         
-        return Response("driver added", status=status.HTTP_200_OK)
+        return Response("Trip added", status=status.HTTP_200_OK)
         
         
     @action(methods=['put'], detail=True)
@@ -258,6 +277,9 @@ class DriverTripView(ViewSet):
         
         passenger_trip = driver_trip.passenger_trips.get(passenger__user = request.auth.user)
 
+        message = Message.objects.filter(passenger_trip = passenger_trip, driver_trip=driver_trip)
+        
+        message.delete()
 
 
         
@@ -270,7 +292,216 @@ class DriverTripView(ViewSet):
         passenger_trip.delete()
         
         
-        return Response("driver added", status=status.HTTP_200_OK)
+        return Response("Trip Deleted", status=status.HTTP_200_OK)
 
 
+    @action(methods=['post'], detail=False)
+    def get_driver_trips_by_passenger_trip(self, request):
+        
+        trip_origin = (request.data['origin']['lat'], request.data['origin']['lng'])
+        trip_destination = (request.data['destination']['lat'], request.data['destination']['lng'])
+        
+        passenger_trip_distance = geodesic(trip_origin, trip_destination).mi
+        
+        # first filter driver trips by those that start after the passenger_trip start date
+        driver_trips = DriverTrip.objects.filter(start_date__gt = request.data['start_date'])
+        
+        detailed_trips = []  
+         
+        # assigning detail of ALL driver trips that occur after passenger trip starting date
+        for trip in driver_trips:
+            
+            if trip.completed == True:
+                pass
+            
+            else:
+            
+                
+                
+                if trip.driver.user == request.auth.user:
+                    trip.is_user = True
+                    pass
+              
+                else:
+                    trip.is_user = False
+                    
+                    if len(trip.passenger_trips.all()) == 0:
+                        trip.is_assigned = False
+                        
+                    else:
+                        trip.is_assigned = True
+                        
+                        
+                    for passenger_trip in trip.passenger_trips.all():
+                        if passenger_trip.passenger.user.id == request.auth.user.id:
+                            trip.is_signed_up = True
+                        else:
+                            trip.is_signed_up = False
+                            pass
+                
+                    point_objects = []
+                    raw_points = polyline.decode(trip.path)
+                
+                    
+                    for index, point in enumerate(raw_points):
+                        if index % 5 == 0:
+                            a = {
+                                "lat": point[0],
+                                "lng": point[1]
+                            }
+                            point_objects.append(a)
+                    trip.path_points = point_objects
+                    
+
+                    detailed_trips.append(trip)
+                    
+        
+    
+
+        
+        
+        
+        
+        
+        nearby_trips = []
+        far_trips = []
+        shortest_distance = 100000000
+        best_trips = []
+        
+
+        # for each detailed trip that is close by to passenger trip, pop it out and append to nearby trips
+        for trip in detailed_trips:
+       
+            
+            
+            center_point = (request.data['origin']['lat'], request.data['origin']['lng'])
+            test_point = (trip.origin.lat, trip.origin.lng)
+        
+            distance_away = great_circle(center_point, test_point).mi
+            
+            # it its close by to start, add to nearby trips list
+            if distance_away < trip.detour_radius:
+                
+    
+                nearby_trips.append(trip)
+                
+                
+            else:
+                far_trips.append(trip)
+               
+                
+        
+            
+                
+            
+ 
+
+        
+        final_trips = set()
+        
+        far_trip_point_break = False
+        nearby_trip_point_break = False
+        far_trip_break = False
+        
+        # for each nearby trip
+        for nearby_trip in nearby_trips:
+            
+            nearby_trip_destination = (nearby_trip.destination.lat, nearby_trip.destination.lng)
+            nearby_trip_distance = geodesic(nearby_trip_destination, trip_destination).mi
+
+            
+            
+
+            
+           
+
+            # for each far trip
+            for far_trip in far_trips:
+                far_trip_destination = (far_trip.destination.lat, far_trip.destination.lng)    
+                far_trip_distance = geodesic(far_trip_destination, trip_destination).mi
+    
+
+
+             
+                for nearby_trip_point in nearby_trip.path_points:
+                    
+               
+    
+                    for far_trip_point in far_trip.path_points:
+                        if far_trip_distance > passenger_trip_distance:
+                            pass
+                        
+                
+                        center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
+                        test_point = (far_trip_point['lat'], far_trip_point['lng'])
+                    
+                        distance_away = great_circle(center_point, test_point).mi
+                        
+                        
+                            
+                        if distance_away < nearby_trip.detour_radius:
+                            
+                            
+                        #    if there is an intersection and the far trip destination is closer than passenger now
+                            if far_trip_distance < passenger_trip_distance:
+                                if far_trip_distance < shortest_distance:
+                                    shortest_distance = far_trip_distance
+                                    best_trips = [nearby_trip, far_trip]
+                                    
+                                final_trips.add(nearby_trip)
+                                final_trips.add(far_trip)
+                                nearby_trip_point_break = True
+                                break
+                            
+                            # if there is an intersection but the far trip isnt closer, check to see if the nearby trip gets closer or not
+                            elif nearby_trip_distance < passenger_trip_distance:
+                                
+                                if nearby_trip_distance < shortest_distance:
+                                    shortest_distance = nearby_trip_distance
+                                    best_trips=[nearby_trip]
+                                    
+                                final_trips.add(nearby_trip)
+                                nearby_trip_point_break = True
+                                break
+                            
+                        #     # if there is no intersection but the nearby trip still gets you closer, add it
+                        elif nearby_trip_distance < passenger_trip_distance:
+                            if nearby_trip_distance < shortest_distance:
+                                    shortest_distance = nearby_trip_distance
+                                    best_trips=[nearby_trip]
+                                    
+                            final_trips.add(nearby_trip)
+                            nearby_trip_point_break = True
+                            pass
+                            
+
+                                
+                    if nearby_trip_point_break ==True:
+                        far_trip_break = True
+                        pass
+                # if far_trip_break ==True:
+                #     pass
+               
+
+        
+        
+        for final_trip in final_trips:
+            for best_trip in best_trips:
+                if final_trip.id == best_trip.id:
+                    final_trip.is_recommended = True
+                    break
+                else:
+                    final_trip.is_recommended = False
+        
+       
+
+        
+        
+        
+        serializer = DriverTripSerializer(final_trips, many = True)
+
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
     
