@@ -302,7 +302,6 @@ class DriverTripView(ViewSet):
         trip_destination = (request.data['destination']['lat'], request.data['destination']['lng'])
         
         passenger_trip_distance = geodesic(trip_origin, trip_destination).mi
-        print(passenger_trip_distance)
         
         # first filter driver trips by those that start after the passenger_trip start date
         driver_trips = DriverTrip.objects.filter(start_date__gt = request.data['start_date'])
@@ -328,22 +327,24 @@ class DriverTripView(ViewSet):
                     
                     if len(trip.passenger_trips.all()) == 0:
                         trip.is_assigned = False
+                        
                     else:
                         trip.is_assigned = True
-                        pass
+                        
                         
                     for passenger_trip in trip.passenger_trips.all():
                         if passenger_trip.passenger.user.id == request.auth.user.id:
                             trip.is_signed_up = True
                         else:
                             trip.is_signed_up = False
+                            pass
                 
                     point_objects = []
                     raw_points = polyline.decode(trip.path)
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 10 == 0:
+                        if index % 5 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
@@ -428,7 +429,7 @@ class DriverTripView(ViewSet):
     
                     for far_trip_point in far_trip.path_points:
                         if far_trip_distance > passenger_trip_distance:
-                            break
+                            pass
                         
                 
                         center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
