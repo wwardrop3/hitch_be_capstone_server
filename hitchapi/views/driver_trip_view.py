@@ -401,7 +401,7 @@ class DriverTripView(ViewSet):
         
         far_trip_point_break = False
         nearby_trip_point_break = False
-        far_trip_break = False
+        far_trip2_break = False
         
         # for each nearby trip
         for nearby_trip in nearby_trips:
@@ -419,69 +419,90 @@ class DriverTripView(ViewSet):
             for far_trip in far_trips:
                 far_trip_destination = (far_trip.destination.lat, far_trip.destination.lng)    
                 far_trip_distance = geodesic(far_trip_destination, trip_destination).mi
+                
+                
+                for far_trip2 in far_trips:
+                    far_trip2_destination = (far_trip2.destination.lat, far_trip2.destination.lng)    
+                    far_trip2_distance = geodesic(far_trip2_destination, trip_destination).mi
+                
+                    # if the far trip doesnt get the person closer to their destination, no need to search the points **can do this with 1 connection would not with 2 connections
+                    if far_trip2_distance > passenger_trip_distance:
+                        pass
     
 
 
              
-                for nearby_trip_point in nearby_trip.path_points:
+                    for nearby_trip_point in nearby_trip.path_points:
                     
-               
-    
-                    for far_trip_point in far_trip.path_points:
-                        if far_trip_distance > passenger_trip_distance:
-                            pass
-                        
-                
-                        center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
-                        test_point = (far_trip_point['lat'], far_trip_point['lng'])
+                        for far_trip_point in far_trip.path_points:
+                            
+                            center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
+                            test_point = (far_trip_point['lat'], far_trip_point['lng'])
+                            
+                            distance_away = great_circle(center_point, test_point).mi
+                            
+                            if distance_away < nearby_trip.detour_radius:
+                                
+                                
+                            
+                                for far_trip2_point in far_trip2.path_points:
+                            
+                            
                     
-                        distance_away = great_circle(center_point, test_point).mi
-                        
-                        
+                                    center_point = (far_trip_point['lat'], far_trip_point['lng'])
+                                    test_point = (far_trip2_point['lat'], far_trip2_point['lng'])
+                                
+                                    distance_away2 = great_circle(center_point, test_point).mi
                             
-                        if distance_away < nearby_trip.detour_radius:
                             
-                            
-                        #    if there is an intersection and the far trip destination is closer than passenger now
-                            if far_trip_distance < passenger_trip_distance:
+                                # if there is trip that overlaps with the second connection
+                                    if distance_away2 < far_trip.detour_radius:
+                                
+                                
+                                        # if the second connection is the shortest distance from the destination
+                                        if far_trip2_distance < shortest_distance:
+                                            shortest_distance = far_trip_distance
+                                            best_trips = [nearby_trip, far_trip, far_trip2]
+                                            
+                                        final_trips.add(nearby_trip)
+                                        final_trips.add(far_trip2)
+                                        final_trips.add(far_trip)
+                                        far_trip2_break = True
+                                        break
+                                    
+                               
+                            elif far_trip_distance < passenger_trip_distance:
+                                
                                 if far_trip_distance < shortest_distance:
-                                    shortest_distance = far_trip_distance
-                                    best_trips = [nearby_trip, far_trip]
+                                    shortest_distance = nearby_trip_distance
+                                    best_trips=[nearby_trip, far_trip]
                                     
                                 final_trips.add(nearby_trip)
                                 final_trips.add(far_trip)
                                 nearby_trip_point_break = True
                                 break
-                            
-                            # if there is an intersection but the far trip isnt closer, check to see if the nearby trip gets closer or not
-                            elif nearby_trip_distance < passenger_trip_distance:
-                                
-                                if nearby_trip_distance < shortest_distance:
-                                    shortest_distance = nearby_trip_distance
-                                    best_trips=[nearby_trip]
-                                    
-                                final_trips.add(nearby_trip)
-                                nearby_trip_point_break = True
-                                break
-                            
-                        #     # if there is no intersection but the nearby trip still gets you closer, add it
+                        if far_trip2_break==True:
+                                pass
+                    # if there is an intersection but the far trip isnt closer, check to see if the nearby trip gets closer or not
                         elif nearby_trip_distance < passenger_trip_distance:
+                            
                             if nearby_trip_distance < shortest_distance:
-                                    shortest_distance = nearby_trip_distance
-                                    best_trips=[nearby_trip]
-                                    
+                                shortest_distance = nearby_trip_distance
+                                best_trips=[nearby_trip]
+                                
                             final_trips.add(nearby_trip)
                             nearby_trip_point_break = True
-                            pass
-                            
+                            break
+
+                            #     # if there is no intersection but the nearby trip still gets you closer, add it
 
                                 
-                    if nearby_trip_point_break ==True:
-                        far_trip_break = True
-                        pass
-                # if far_trip_break ==True:
+                if nearby_trip_point_break ==True:
+                
+                    pass
+                            # if far_trip_break ==True:
                 #     pass
-               
+            
 
         
         
