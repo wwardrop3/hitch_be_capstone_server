@@ -344,7 +344,7 @@ class DriverTripView(ViewSet):
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 5 == 0:
+                        if index % 4 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
@@ -435,6 +435,7 @@ class DriverTripView(ViewSet):
                
     
                     for far_trip_point in far_trip.path_points:
+                    
                         
                         
                 
