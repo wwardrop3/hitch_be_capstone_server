@@ -344,7 +344,7 @@ class DriverTripView(ViewSet):
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 2 == 0:
+                        if index % 5 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
