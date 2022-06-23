@@ -344,7 +344,7 @@ class DriverTripView(ViewSet):
                 
                     
                     for index, point in enumerate(raw_points):
-                        if index % 5 == 0:
+                        if index % 4 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
@@ -419,6 +419,13 @@ class DriverTripView(ViewSet):
             for far_trip in far_trips:
                 far_trip_destination = (far_trip.destination.lat, far_trip.destination.lng)    
                 far_trip_distance = geodesic(far_trip_destination, trip_destination).mi
+                
+                
+                
+                
+                # if the far trip doesnt get the person closer to their destination, no need to search the points **can do this with 1 connection would not with 2 connections
+                if far_trip_distance > passenger_trip_distance:
+                    pass
     
 
 
@@ -428,8 +435,8 @@ class DriverTripView(ViewSet):
                
     
                     for far_trip_point in far_trip.path_points:
-                        if far_trip_distance > passenger_trip_distance:
-                            pass
+                    
+                        
                         
                 
                         center_point = (nearby_trip_point['lat'], nearby_trip_point['lng'])
@@ -444,6 +451,7 @@ class DriverTripView(ViewSet):
                             
                         #    if there is an intersection and the far trip destination is closer than passenger now
                             if far_trip_distance < passenger_trip_distance:
+                                
                                 if far_trip_distance < shortest_distance:
                                     shortest_distance = far_trip_distance
                                     best_trips = [nearby_trip, far_trip]
