@@ -13,6 +13,7 @@ pylint-django = "*"
 faker = "*"
 polyline = "*"
 geopy = "*"
+gunicorn = "*"
 
 [dev-packages]
 
