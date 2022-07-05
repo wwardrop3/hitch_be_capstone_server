@@ -14,6 +14,7 @@ faker = "*"
 polyline = "*"
 geopy = "*"
 gunicorn = "*"
+django-on-heroku = "*"
 
 [dev-packages]
 
