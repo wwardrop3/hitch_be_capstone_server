@@ -10,7 +10,7 @@ DELETE FROM hitchapi_triptag
 WHERE driver_trip_id >0
 
 DELETE FROM hitchapi_drivertrip
-WHERE id >0
+WHERE id >2
 
 DELETE FROM hitchapi_driverpassengertrip
 WHERE id >0
