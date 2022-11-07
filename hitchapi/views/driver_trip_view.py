@@ -55,6 +55,9 @@ class DriverTripView(ViewSet):
                     if trip.completed == True:
                         pass
                     
+                    elif trip.start_date < datetime.datetime.today:
+                        pass
+                    
                     else:
                     
                         
