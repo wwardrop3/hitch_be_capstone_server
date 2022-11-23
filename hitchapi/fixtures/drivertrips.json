@@ -1,23 +1,22 @@
 [
     {
-    "model": "hitchapi.drivertrip",
-    "pk": 1,
-    "fields": {
-        "driver": 1,
-        "destination": 2,
-        "origin": 1,
-        "seats": 1,
-        "trip_distance": 140,
-        "expected_travel_time": 20,
-        "drop_off_radius": 20,
-        "pick_up_radius": 20,
-        "creation_date": "2022-05-18 11:33:31.353462",
-        "start_date":"2022-05-18 11:33:31.353462",
-        "completion_date": "2022-05-19 11:33:31.353462",
-        "completed": false,
-        "trip_summary": "driver trip from nashville to atlanta",
-        "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
-    }
+        "model": "hitchapi.drivertrip",
+        "pk": 1,
+        "fields": {
+            "driver": 1,
+            "destination": 2,
+            "origin": 1,
+            "seats": 1,
+            "trip_distance": 140,
+            "expected_travel_time": 20,
+            "detour_radius": 20,
+            "creation_date": "2022-05-18 11:33:31.353462",
+            "start_date": "2022-05-18 11:33:31.353462",
+            "completion_date": "2022-05-19 11:33:31.353462",
+            "completed": false,
+            "trip_summary": "driver trip from nashville to atlanta",
+            "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
+        }
     },
     {
         "model": "hitchapi.drivertrip",
@@ -29,58 +28,32 @@
             "seats": 2,
             "trip_distance": 140,
             "expected_travel_time": 100.6,
-            "drop_off_radius": 20,
-            "pick_up_radius": 20,
+            "detour_radius": 20,
             "creation_date": "2022-05-18 11:33:31.353462",
-            "start_date":"2022-05-20 11:33:31.353462",
+            "start_date": "2022-05-20 11:33:31.353462",
             "completion_date": "2022-05-21 11:33:31.353462",
             "completed": false,
             "trip_summary": "driver trip from atlanta to charlotte",
             "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
         }
-        },
-        {
-            "model": "hitchapi.drivertrip",
-            "pk": 3,
-            "fields": {
-                "driver": 2,
-                "destination": 3,
-                "origin": 1,
-                "seats": 1,
-                "trip_distance": 140,
-                "expected_travel_time": 70.6,
-                "drop_off_radius": 20,
-                "pick_up_radius": 20,
-                "creation_date": "2022-05-18 11:33:31.353462",
-                "start_date":"2022-05-18 11:33:31.353462",
-                "completion_date": "2022-05-19 11:33:31.353462",
-                "trip_summary": "trip 3",
-                "completed":false,
-                "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
-            }
-            },
-            {
-                "model": "hitchapi.drivertrip",
-                "pk": 4,
-                "fields": {
-                    "driver": 3,
-                    "destination": 6,
-                    "origin": 5,
-                    "seats": 1,
-                    "trip_distance": 140,
-                    "expected_travel_time": 70.6,
-                    "drop_off_radius": 20,
-                    "pick_up_radius": 20,
-                    "creation_date": "2022-05-18 11:33:31.353462",
-                    "start_date":"2022-05-18 11:33:31.353462",
-                    "completion_date": "2022-05-19 11:33:31.353462",
-                    "trip_summary": "trip 3",
-                    "completed": false,
-                    "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
-    
-                }
-            }
-
-
+    },
+    {
+        "model": "hitchapi.drivertrip",
+        "pk": 3,
+        "fields": {
+            "driver": 2,
+            "destination": 3,
+            "origin": 1,
+            "seats": 1,
+            "trip_distance": 140,
+            "expected_travel_time": 70.6,
+            "detour_radius": 20,
+            "creation_date": "2022-05-18 11:33:31.353462",
+            "start_date": "2022-05-18 11:33:31.353462",
+            "completion_date": "2022-05-19 11:33:31.353462",
+            "trip_summary": "trip 3",
+            "completed": false,
+            "path": "eqidE|pilNwQ~c@iI|nBmxAzk@a~@`b@{Bnx@jd@r{EdU~`Bns@fXpbAjeAznBf|D~y@vjMks@poAnt@v[x_FlbDvwAnvCbf@`uCnhDv|EvsGhfFjaC`kDlyBh`@trCgMr~AaH||Bty@dDl`AeqBv|HccDhbMauEfmHuxCpvDesErlIay@vtFyx@~|Qoz@f}Eez@xuAek@j}CkyAvnDes@|lCmsAzaGy`ApzF_g@teFkkEx~L_uDvqKiP|_L`E|cMmn@bfJgqA|nManAtiCQdpCeh@plEs_A`cMc_Af`Ibu@dlH}kA~hVp^n_DypAvhGkb@`dB{zCh|PorA`xSilDjyXiiCb|KgvEt|QowC|qL{hD~yJuvC~yHazDbsJu|EfaGuqCtcBexKf{DeoF|}H}zBzjDo}FxbForChjGaiArlCiBnrD{gAbhCgwE|mE_uCjzFi`D|`HecD`vFipDhfEchEf|@ggDfgDmoNd_H_pGr{CmxE~gAsnFjv@agEh}AcvDtmBaeEhbF_eFtkCs}Bvf@yzA~{AgtExjFouBhuGakAd`C}i@n_Egk@hvAmhB|aA}qEr\\moBo_@}pBfR_vBtj@cbBsVsrDky@qbBerAg}@ny@cfAxRctBbVgt@xsB}eCbeAssDbo@klHjhGozBpeA_bBndBqoBlzAq_BxvAkxB`oCmkBvsAcpFbpBwfEz~F{@|qHyo@|pC_JfwCy~CvtA{cDvHgnBf~AojB~c@_qAjj@ysBac@uv@es@cvAhGycBrbDyrEtqF}eB`l@wjBfiBqyCblD}aEryEeaBjiAeqCzD{pKj@edIjB{pBl_@siDhmCgjHlyBo`Gr`C{uChtA{pEbb@cfKog@u{AjLe_@xj@_l@hl@yeBl@_kD|A_o@~p@gwChtE_kCpqG_n@rwFqjBrbAunA`oBmqHluE_dAtp@aj@xeEum@`bCtV~}@mt@vmCwo@r|BzmAzy@_d@doAwMteCdm@nnB|hAvgArfCllAdzAn_BvAdgCgwAf}Cac@b_AfXz{BiOry@iuAb\\kaAldDmlBtzF{jAptCoj@xuFbnAj}FouA`qDy_CbpCkxBxH_iBzp@qcEdeD_cEvqCohAsp@urA~@ejAfCsZxk@giBf~BcoAfeG|g@f~@uJts@ge@_SkmBvh@gvApfAg|ExoC}{WxgWseJfgGcoEnrLiqCz}GenBfrEgxChw@wtGvdAacG~qFqpVj|Qu{Xlp[eiGbbG}aHnhJgkDtpFizEv}DacEh}Cmq@jYfLl~B_Khd@"
+        }
+    }
 ]
-    
