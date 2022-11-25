@@ -1,77 +1,21 @@
 [
     {
-    "model": "hitchapi.passengertrip",
-    "pk": 1,
-    "fields": {
-        "passenger": 3,
-        "origin": 5,
-        "destination": 6,
-        "trip_distance": 140,
-        "expected_travel_time": 80,
-        "trip_summary": "Passenger trip from nashville to charlotte",
-        "creation_date": "2022-05-18 11:33:31.353462",
-        "completion_date": "2022-05-19 11:33:31.353462",
-        "start_date": "2022-05-18 11:33:31.353462"
-    }
-    },
-    {
         "model": "hitchapi.passengertrip",
-        "pk": 2,
+        "pk": 1,
         "fields": {
-            "passenger": 2,
-            "origin": 3,
-            "destination": 4,
+            "passenger": 3,
+            "origin": 5,
+            "destination": 6,
+            "path": "45",
+            "is_approved": true,
+            "origin_place": "nashville",
+            "destination_place": "oregon",
             "trip_distance": 140,
-            "expected_travel_time": 90,
-            "trip_summary": "Would like a ride",
+            "expected_travel_time": 80,
+            "trip_summary": "Passenger trip from nashville to charlotte",
             "creation_date": "2022-05-18 11:33:31.353462",
             "completion_date": "2022-05-19 11:33:31.353462",
             "start_date": "2022-05-18 11:33:31.353462"
         }
-        },
-        {
-            "model": "hitchapi.passengertrip",
-            "pk": 3,
-            "fields": {
-                "passenger": 3,
-                "origin": 4,
-                "destination": 5,
-                "trip_distance": 140,   
-                "expected_travel_time": 10,
-                "trip_summary": "Would like a ride",
-                "creation_date": "2022-05-18 11:33:31.353462",
-                "completion_date": "2022-05-19 11:33:31.353462",
-                "start_date": "2022-05-18 11:33:31.353462"
-            }
-            },
-            {
-                "model": "hitchapi.passengertrip",
-                "pk": 4,
-                "fields": {
-                    "passenger": 1,
-                    "origin": 6,
-                    "destination": 7,
-                    "trip_distance": 140,
-                    "expected_travel_time": 190,  
-                    "trip_summary": "Would like a ride",     
-                    "creation_date": "2022-05-18 11:33:31.353462",
-                    "completion_date": "2022-05-19 11:33:31.353462",
-                    "start_date": "2022-05-18 11:33:31.353462"
-                }
-                },
-                {
-                    "model": "hitchapi.passengertrip",
-                    "pk": 5,
-                    "fields": {
-                        "passenger": 2,
-                        "origin": 8,
-                        "destination": 9,
-                        "trip_distance": 140,
-                        "expected_travel_time": 50,
-                        "trip_summary": "Would like a ride",          
-                        "creation_date": "2022-05-18 11:33:31.353462",
-                        "completion_date": "2022-05-19 11:33:31.353462",
-                        "start_date": "2022-05-18 11:33:31.353462"
-                    }
-                    }
+    }
 ]
