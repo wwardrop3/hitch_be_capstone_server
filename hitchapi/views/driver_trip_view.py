@@ -55,9 +55,6 @@ class DriverTripView(ViewSet):
                     if trip.completed == True:
                         pass
                     
-                    elif trip.start_date < datetime.datetime.today:
-                        pass
-                    
                     else:
                     
                         
@@ -169,7 +166,8 @@ class DriverTripView(ViewSet):
         # set the key as the latitude
         
         driver = Member.objects.get(user = request.auth.user)
-
+        
+        
         
         origin = Location.objects.create(
             lat = request.data['origin']['lat'],
@@ -345,14 +343,14 @@ class DriverTripView(ViewSet):
                     raw_points = polyline.decode(trip.path)
                 
                     
-                    for index, point in enumerate(trip.path):
-                        if index % 3 == 0:
+                    for index, point in enumerate(raw_points):
+                        if index % 6 == 0:
                             a = {
                                 "lat": point[0],
                                 "lng": point[1]
                             }
                             point_objects.append(a)
-                    trip.path = point_objects
+                    trip.path_points = point_objects
                     
 
                     detailed_trips.append(trip)
@@ -432,11 +430,11 @@ class DriverTripView(ViewSet):
 
 
              
-                for nearby_trip_point in nearby_trip.path:
+                for nearby_trip_point in nearby_trip.path_points:
                     
                
     
-                    for far_trip_point in far_trip.path:
+                    for far_trip_point in far_trip.path_points:
                     
                         
                         

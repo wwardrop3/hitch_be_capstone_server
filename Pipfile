@@ -15,7 +15,6 @@ polyline = "*"
 geopy = "*"
 gunicorn = "*"
 django-on-heroku = "*"
-django-heroku = "*"
 
 [dev-packages]
 
