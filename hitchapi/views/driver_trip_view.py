@@ -1,12 +1,9 @@
 from ast import Pass
 from crypt import methods
-import datetime
 from lib2to3.pgen2 import driver
 from os import stat
 from re import M
-from sqlite3 import Date
 from typing import final
-from xmlrpc.client import DateTime
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
 from rest_framework.response import Response
@@ -17,7 +14,7 @@ import polyline
 from geopy import distance
 from geopy.distance import great_circle, geodesic
 from django.db.models import Q
-
+from datetime import datetime
 
 
 from hitchapi.models.DriverTrip import DriverTrip
